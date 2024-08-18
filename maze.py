@@ -1,4 +1,6 @@
 import os
+from pynput import keyboard
+from pynput.keyboard import Key
 
 mazelayout = [["X", "|", "END", "|", "X", "|", "X"],
         ["X", "|", " ", "|", "X", "|", "X"],
@@ -18,7 +20,7 @@ def maze():
         mazeupdate()
     else:
         print("Congrats you won!")
-        Boolean = True
+        quit()
 
 def mazeupdate():
     for i in mazelayout:
@@ -69,23 +71,21 @@ def movedown():
 
 def clear():
     os.system("cls")
+   
+def on_key_release(key):
+    if key == Key.right:
+        moveright()
+    elif key == Key.left:
+        moveleft()
+    elif key == Key.up:
+        moveup()
+    elif key == Key.down:
+        movedown()
+    elif key == Key.esc:
+        quit()
+
 
 maze()
-while Boolean == False:
-    print("""press 1 to move left
-press 2 to move right
-press 3 to move up
-press 4 to move down""")
-    
-    action = int(input("Enter num: "))
 
-    if action == 1:
-        moveleft()
-    elif action == 2:
-        moveright()
-    elif action == 3:
-        moveup()
-    elif action == 4:
-        movedown()
-    else:
-        print("Try again!")
+with keyboard.Listener(on_release=on_key_release) as listener:
+    listener.join()
